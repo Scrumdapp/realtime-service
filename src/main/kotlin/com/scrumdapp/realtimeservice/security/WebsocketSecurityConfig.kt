@@ -20,8 +20,7 @@ class WebsocketSecurityConfig {
         passportService: PassportService,
         builder: MessageMatcherDelegatingAuthorizationManager.Builder
     ) = builder.apply {
-        simpMessageDestMatchers("/app/**").authenticated()
-        simpSubscribeDestMatchers("/topic/**").authenticated()
+        simpSubscribeDestMatchers("/groups/{groupId}/users.removed").passport(passportService, VerifyGroupAccess(VariableResourceFinder("groupId")))
         simpSubscribeDestMatchers("/groups/{groupId}/users.added").passport(passportService, VerifyGroupAccess(VariableResourceFinder("groupId")))
         simpSubscribeDestMatchers("/user/queue/errors").authenticated()
         nullDestMatcher().authenticated()
