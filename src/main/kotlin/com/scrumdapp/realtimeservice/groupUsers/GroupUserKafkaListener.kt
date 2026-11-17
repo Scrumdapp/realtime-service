@@ -7,6 +7,7 @@ import com.scrumdapp.realtimeservice.groupUsers.events.GroupUserAddedV1
 import com.scrumdapp.realtimeservice.groupUsers.events.GroupUserRemovedV1
 import com.scrumdapp.realtimeservice.groupUsers.events.GroupUserUpdatedV1
 import org.springframework.kafka.annotation.KafkaListener
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Controller
 import tools.jackson.databind.ObjectMapper
@@ -18,8 +19,9 @@ class GroupUserKafkaListener(
     val parser = ObjectMapper()
 
     @KafkaListener(topics = ["com.scrumdapp.groups.users.added.v1"])
-    fun userAddedToGroup(event: String) {
-        val data = parser.readValue(event, GroupUserAddedV1::class.java)
+    fun userAddedToGroup(
+        @Payload data: GroupUserAddedV1
+    ) {
         template.convertAndSend("/groups/${data.groupId}/users.added", GroupUserAdded(data.userId))
     }
 
