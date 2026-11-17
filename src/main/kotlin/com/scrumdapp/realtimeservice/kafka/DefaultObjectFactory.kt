@@ -8,7 +8,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.core.ConsumerFactory
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory
 import org.springframework.kafka.support.converter.JacksonJsonMessageConverter
-import org.springframework.kafka.support.serializer.JacksonJsonDeserializer
 
 @Configuration
 class DefaultObjectFactory {
