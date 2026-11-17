@@ -19,22 +19,18 @@ class GroupUserKafkaListener(
     val parser = ObjectMapper()
 
     @KafkaListener(topics = ["com.scrumdapp.groups.users.added.v1"])
-    fun userAddedToGroup(
-        @Payload data: GroupUserAddedV1
-    ) {
+    fun userAddedToGroup(@Payload data: GroupUserAddedV1) {
         template.convertAndSend("/groups/${data.groupId}/users.added", GroupUserAdded(data.userId))
     }
 
-    @KafkaListener(topics = ["com.scrumdapp.groups.users.removed.v1"])
-    fun userRemovedFromGroup(event: String) {
-        val data = parser.readValue(event, GroupUserRemovedV1::class.java)
-        template.convertAndSend("/groups/${data.groupId}/users.removed", GroupUserRemoved(data.userId))
+    @KafkaListener(topics = ["com.scrumdapp.groups.users.updated.v1"])
+    fun groupUserUpdated(@Payload data: GroupUserUpdatedV1) {
+        template.convertAndSend("/groups/${data.groupId}/users.updated", GroupUserUpdated(data.userId))
     }
 
-    @KafkaListener(topics = ["com.scrumdapp.groups.users.updated.v1"])
-    fun groupUserUpdated(event: String) {
-        val data = parser.readValue(event, GroupUserUpdatedV1::class.java)
-        template.convertAndSend("/groups/${data.groupId}/users.added", GroupUserUpdated(data.userId))
+    @KafkaListener(topics = ["com.scrumdapp.groups.users.removed.v1"])
+    fun userRemovedFromGroup(@Payload data: GroupUserRemovedV1) {
+        template.convertAndSend("/groups/${data.groupId}/users.removed", GroupUserRemoved(data.userId))
     }
 
 }
