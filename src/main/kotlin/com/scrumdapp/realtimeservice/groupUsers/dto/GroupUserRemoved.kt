@@ -1,5 +1,5 @@
 package com.scrumdapp.realtimeservice.groupUsers.dto
 
-data class UserRemoved(
+data class GroupUserRemoved(
     val id: Long
 )
