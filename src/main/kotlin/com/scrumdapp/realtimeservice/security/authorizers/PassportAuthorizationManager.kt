@@ -25,16 +25,6 @@ class PassportAuthorizationManager(
     }
 }
 
-data class PassportAuthorizationResult(val granted: Boolean) : AuthorizationResult {
-    override fun isGranted(): Boolean {
-        return granted
-    }
-}
-
-class ObjectAuthorizationContext(
-    val variables: Map<String, String>
-)
-
 fun MessageMatcherDelegatingAuthorizationManager.Builder.Constraint.passport(service: PassportService, matcher: PassportAuthorizer): MessageMatcherDelegatingAuthorizationManager.Builder {
     return this.access(PassportAuthorizationManager(service, matcher))
 }
