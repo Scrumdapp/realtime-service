@@ -15,15 +15,13 @@ class GroupKafkaListener(
 ) {
     val parser = ObjectMapper()
 
-    @KafkaListener(topics = ["com.scrumdapp.checkpoints.session.created.v1"])
-    fun sessionCreated(event: String) {
-        val data = parser.readValue(event, CheckpointSessionCreatedV1::class.java)
-        template.convertAndSend("/groups/${data.groupId}/checkpoints.created", CheckpointSessionCreatedEvent(data.sessionId))
+    @KafkaListener(topics = ["com.scrumdapp.checkpoints.sessions.created.v1"])
+    fun sessionCreated(data: CheckpointSessionCreatedV1) {
+        template.convertAndSend("/groups/${data.groupId}/sessions.created", CheckpointSessionCreatedEvent(data.sessionId))
     }
 
     @KafkaListener(topics = ["com.scrumdapp.checkpoints.updated.v1"])
-    fun checkpointUpdated(event: String) {
-        val data = parser.readValue(event, UserCheckpointUpdatedV1::class.java)
+    fun checkpointUpdated(data: UserCheckpointUpdatedV1) {
         template.convertAndSend("/sessions/${data.sessionId}/checkpoints.updated", CheckpointUpdatedEvent(data.userId))
     }
 

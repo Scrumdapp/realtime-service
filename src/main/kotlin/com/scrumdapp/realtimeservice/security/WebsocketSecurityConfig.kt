@@ -22,6 +22,7 @@ class WebsocketSecurityConfig {
     ) = builder.apply {
         simpSubscribeDestMatchers("/groups/{groupId}/users.removed").passport(passportService, VerifyGroupAccess(VariableResourceFinder("groupId")))
         simpSubscribeDestMatchers("/groups/{groupId}/users.added").passport(passportService, VerifyGroupAccess(VariableResourceFinder("groupId")))
+        simpSubscribeDestMatchers("/groups/{groupId}/sessions.created").passport(passportService, VerifyGroupAccess(VariableResourceFinder("groupId")))
         simpSubscribeDestMatchers("/user/queue/errors").authenticated()
         nullDestMatcher().authenticated()
         anyMessage().denyAll()
